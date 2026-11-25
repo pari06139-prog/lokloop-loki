@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LOKI — LOKLOOP Voice Companion</title>
+<style>
+:root{--cream:#fff6e7;--ink:#241b18;--maroon:#722b35;--gold:#e9ad43;--green:#245746;--line:#2c211d}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,sans-serif}
+.wrap{max-width:760px;margin:auto;padding:18px}
+.top{display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid var(--line);padding:10px 0 16px}
+.logo{font-weight:950;letter-spacing:2px;color:var(--maroon);font-size:24px}.tag{font-size:12px;font-weight:800;background:var(--gold);padding:7px 10px;border:2px solid var(--line);border-radius:999px}
+.hero{margin:28px 0 18px}.eyebrow{font-weight:900;letter-spacing:2px;color:var(--green);font-size:12px}.hero h1{font-size:clamp(34px,8vw,58px);line-height:1.02;margin:10px 0}.hero p{line-height:1.6;max-width:550px}
+.panel{border:2px solid var(--line);border-radius:24px;background:#fffdf7;padding:18px;box-shadow:7px 7px 0 var(--gold)}
+.orb{width:92px;height:92px;border-radius:50%;margin:8px auto 14px;background:var(--maroon);border:4px solid var(--line);display:grid;place-items:center;color:#fff;font-size:28px;font-weight:900;box-shadow:0 0 0 9px #f4dfbd}
+.status{text-align:center;font-weight:800;margin:22px 0 14px}.status small{display:block;font-weight:500;color:#685c54;margin-top:5px}
+button{font:inherit;font-weight:800;border:2px solid var(--line);border-radius:15px;padding:13px 16px;background:var(--gold);color:var(--ink);cursor:pointer}
+button:disabled{opacity:.5;cursor:not-allowed}.mainbtn{width:100%;background:var(--green);color:white}.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.chat{margin-top:18px;display:grid;gap:10px}.bubble{padding:12px 14px;border:2px solid var(--line);border-radius:16px;line-height:1.5;white-space:pre-wrap}.bot{background:#f3e3ca}.user{background:#e1eee5;margin-left:20px}
+.note{font-size:12px;line-height:1.5;color:#6c5b50;margin-top:16px}
+.examples{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.examples button{background:#fffdf7;font-size:12px;padding:8px 10px}
+footer{text-align:center;font-size:12px;margin:26px 0;color:#695950}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top"><div class="logo">LOKLOOP</div><div class="tag">LOKI · VOICE DEMO</div></header>
+<section class="hero"><div class="eyebrow">CULTURE, IN A CONVERSATION</div><h1>Meet LOKI.<br>Listen to India.</h1><p>Your friendly culture companion for discovering local crafts, creative missions and the stories behind them.</p></section>
+<section class="panel">
+<div class="orb">LOKI</div>
+<div class="status" id="status">Ready when you are.<small>Tap the mic and ask about LOKLOOP.</small></div>
+<button class="mainbtn" id="mic">🎙️ Talk to LOKI</button>
+<div class="actions"><button id="stop">Stop speaking</button><button id="clear">Clear chat</button></div>
+<div class="examples">
+<button data-q="What is LOKLOOP?">What is LOKLOOP?</button>
+<button data-q="Tell me about Indian crafts">Indian crafts</button>
+<button data-q="What are creative missions?">Creative missions</button>
+<button data-q="What is Culture Vault?">Culture Vault</button>
+</div>
+<div class="chat" id="chat"><div class="bubble bot">Namaste! Main LOKI hoon — LOKLOOP ka culture companion. Mic tap karke mujhse baat karo!</div></div>
+<p class="note">Demo note: This prototype uses your browser’s speech recognition and speech synthesis. Answers are demo responses, not live AI. Microphone support works best in Chrome on HTTPS and may vary by device.</p>
+</section>
+<footer>LOKLOOP · Culture connects us.</footer>
+</div>
+<script>
+const statusEl=document.getElementById('status'), chat=document.getElementById('chat'), mic=document.getElementById('mic');
+const synth=window.speechSynthesis;
+function setStatus(main,sub=''){statusEl.innerHTML=main+(sub?'<small>'+sub+'</small>':'')}
+function add(text,who){const b=document.createElement('div');b.className='bubble '+who;b.textContent=text;chat.appendChild(b);b.scrollIntoView({behavior:'smooth',block:'nearest'});return b}
+function answer(q){
+ const s=q.toLowerCase();
+ if(/what is lokloop|lokloop kya|about lokloop/.test(s)) return "LOKLOOP ek culture-led creative platform hai. Yahan students aur emerging creators Indian culture se inspired creative missions explore karte hain, apni skills dikhate hain aur local stories ko celebrate karte hain.";
+ if(/craft|weav|handloom|artisan|artisans/.test(s)) return "India ki crafts sirf products nahi, living stories hain. Har region ke artisans apni techniques, motifs aur traditions ke through culture ko aage badhate hain. LOKLOOP ka Culture Vault in stories ko discover karne ka demo space hai.";
+ if(/mission|creative task|challenge/.test(s)) return "Creative missions short, skill-based briefs hote hain — jaise regional craft par reel banana, local story illustrate karna ya culture-inspired design create karna. Website par listed missions abhi prototype demo data hain.";
+ if(/culture vault|vault/.test(s)) return "Culture Vault ek digital discovery space hai jahan regional crafts, traditions aur makers ki stories explore ki ja sakti hain.";
+ if(/sunday|event|gathering/.test(s)) return "LOKLOOP Sundays community gathering ka concept hai — creators milte hain, ideas share karte hain aur local culture ko celebrate karte hain. Events yahan demo concept ke roop mein dikhaye gaye hain.";
+ if(/nagaland|naga/.test(s)) return "Nagaland ki cultural traditions, weaving, textiles aur community storytelling LOKLOOP ke liye meaningful inspiration hain. Culture ko respectfully represent karna aur makers ki voice ko foreground karna important hai.";
+ if(/hello|hi|namaste|hey/.test(s)) return "Namaste! Main LOKI hoon. LOKLOOP, creative missions ya Indian culture ke baare mein poochho!";
+ return "Achha sawaal! Main abhi LOKLOOP ka demo voice assistant hoon, isliye limited topics par jawab de sakta hoon. Tum LOKLOOP, Indian crafts, creative missions ya Culture Vault ke baare mein pooch sakte ho.";
+}
+function speak(text){
+ if(!synth)return; synth.cancel(); const u=new SpeechSynthesisUtterance(text);u.lang='hi-IN';u.rate=.94;u.pitch=1.02;u.onstart=()=>setStatus('LOKI is speaking…','You can tap Stop speaking.');u.onend=()=>setStatus('Ready when you are.','Tap the mic and ask another question.');synth.speak(u);
+}
+function reply(q){add(q,'user');const a=answer(q);add(a,'bot');speak(a)}
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+let rec=null;
+if(SR){rec=new SR();rec.lang='hi-IN';rec.interimResults=false;rec.maxAlternatives=1;rec.onstart=()=>{mic.disabled=true;setStatus('Listening…','Speak naturally, then pause.');};rec.onresult=e=>{const q=e.results[0][0].transcript;reply(q)};rec.onerror=e=>setStatus('Mic didn’t catch that.','Check microphone permission and try again.');rec.onend=()=>{mic.disabled=false;if(!synth.speaking)setStatus('Ready when you are.','Tap the mic and ask about LOKLOOP.');};}
+mic.addEventListener('click',()=>{if(!rec){setStatus('Voice input not supported here.','Try Chrome on Android or use the question buttons.');return}try{rec.start()}catch(e){setStatus('Mic is already listening.','Please finish speaking.')}});
+document.getElementById('stop').addEventListener('click',()=>{if(synth)synth.cancel();if(rec)try{rec.stop()}catch(e){}setStatus('Stopped.','Tap the mic when you’re ready.');});
+document.getElementById('clear').addEventListener('click',()=>{chat.innerHTML='';if(synth)synth.cancel();setStatus('Chat cleared.','Tap the mic and ask about LOKLOOP.');});
+document.querySelectorAll('[data-q]').forEach(b=>b.addEventListener('click',()=>reply(b.dataset.q)));
+</script>
+</body>
+</html>
